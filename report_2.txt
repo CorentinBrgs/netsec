@@ -1,0 +1,74 @@
+rep-4:
+
+	command: cat synscan.pcap | tcpdump -t -nr - | head -n 3
+
+	IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [P.], seq 4210818527:4210818687, ack 463369472, win 4229, options [nop,nop,TS val 148271 ecr 1080118146], length 160: NFS request xid 3254235248 156 getattr fh 0,0/22
+	IP 192.168.83.1.2049 > 192.168.83.20.850: Flags [P.], seq 1:129, ack 160, win 6365, options [nop,nop,TS val 1080118157 ecr 148271], length 128: NFS reply xid 3254235248 reply ok 124 getattr NON 3 ids 0/3 sz 0
+	IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [.], ack 129, win 4229, options [nop,nop,TS val 148271 ecr 1080118157], length 0
+
+
+
+rep-5
+
+	command to convert to flow
+		rwptoflow --flow-output=synscan.rw synscan.pcap --compression-method=zlib
+
+	command to display contents of flow
+		rwcut --fields sTime,sIp,dIP,sPort,dPort,ttl,flags synscan.rw  | head -n 6
+                  sTime|                                    sIP|                                    dIP|sPort|dPort|ttl|   flags|
+2018/05/15T11:09:44.616|                          192.168.83.20|                           192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|                           192.168.83.1|                          192.168.83.20| 2049|  850| 64|   PA   |
+2018/05/15T11:09:44.616|                          192.168.83.20|                           192.168.83.1|  850| 2049| 64|    A   |
+2018/05/15T11:09:44.616|                          192.168.83.20|                           192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|                           192.168.83.1|                          192.168.83.20| 2049|  850| 64|   PA   |
+
+
+rep-6:
+
+	start time human readable
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --fields=stime --no-titles --no-final-delimiter --delimited=, ../../workfiles/team02.flowrecord.rw  | head -n 1
+	2012/04/26T20:00:00,38257
+
+	end time human readable
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --fields=etime --no-titles --no-final-delimiter --delimited=, ../../workfiles/team02.flowrecord.rw  | tail -n 1
+	2012/04/26T20:59:59,34414
+
+
+	end time epoch
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --fields=etime --no-titles --no-final-delimiter --timestamp-format=epoch --delimited=, ../../workfiles/team02.flowrecord.rw  | tail -n 1
+	1335473999,34414
+
+
+	start time epoch
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --fields=stime --no-titles --no-final-delimiter --timestamp-format=epoch --delimited=, ../../workfiles/team02.flowrecord.rw  | head -n 1
+	1335470400,38257
+
+rep-7:
+	number of packets per hour
+
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --bin-time=3600 --fields=stime --values=packet --timestamp-format=epoch --no-titles --no-final-delimiter --delimited=, ../../workfiles/team02.flowrecord.rw
+
+	output:		1335470400,135358046
+
+
+rep-8:
+	team02@pc01:~/netsec/netsec$ rwuniq --sort-output --bin-time=3600 --fields=stime --values=sIP --timestamp-format=epoch --no-titles --no-final-delimiter --delimited=, ../../workfiles/team02.flowrecord.rw
+	output:		1335470400,447148
+	
+
+
+rep-9:
+
+	undesired packets per hour: 
+		
+		Check what ranges are actually usable	
+		>>> 135358046 * 256
+		34651659776
+		probably bigger
+
+	unique source ips
+		447148 probably bigger
+
+
+	pollution? find some reliable tcp packet count to give a definite answer	
+		Effects of pollution: Unwanted traffic -> power consumption, blocking resources, 
