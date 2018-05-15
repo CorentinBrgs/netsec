@@ -24,3 +24,7 @@ rep-2
 rep-3
 
 	not suitable, not binning and aggregation functions
+
+
+
+Corentin Bergès 11741629
