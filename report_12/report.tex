@@ -1,0 +1,248 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% University/School Laboratory Report
+% LaTeX Template
+% Version 3.0 (4/2/13)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Linux and Unix Users Group at Virginia Tech Wiki 
+% (https://vtluug.org/wiki/Example_LaTeX_chem_lab_report)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={210mm,297mm},
+ left=20mm,
+ right=20mm,
+ top=20mm,
+ bottom=20mm,
+ }
+
+\usepackage{siunitx} % Provides the \SI{}{} command for typesetting SI units
+\usepackage{listings}
+\usepackage{graphicx} % Required for the inclusion of images
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{fancyvrb}
+\usepackage[utf8]{inputenc}
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Network Security \\ 389.159 - SS 2018 \\ Lab Exercise 1 \& Lab Exercise 2} % Title
+
+\author{
+    TEAM 02 \\
+    Corentin \textsc{Bergès} (11741629) (xxxx) \\
+    Christoph \textsc{Echtinger-Sieghart} (00304130) (066 938)
+}
+
+\date{\today} % Date for the report
+\begin{document}
+
+\maketitle % Insert the title, author and date
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\renewcommand{\arraystretch}{2} %Stretch rows
+\section{Lab Exercise 1}
+
+\subsection{rep-1}
+
+We obtained our IPv4 address using the following command:
+
+\begin{Verbatim}
+team02@pc01:~$ ip address show dev em1
+\end{Verbatim}
+
+Our IPv4 address is \textbf{192.168.83.20}.
+
+\subsection{rep-2}
+
+We sent TCP SYN packets to IPv4 address \textbf{192.168.83.33} on ports 113 (ident), 445 (microsoft-ds),
+7210 and 9920 using the following command:
+
+\begin{verbatim}
+team02@pc01:~$ for port in 113 445 7210 9920; do \
+        tgn "ip(dst = 192.168.83.33) /tcp(dst = $port,syn)"; \
+    done
+\end{verbatim}
+
+We now present our findings for each port. We performed the analysis using \texttt{wireshark}, but for
+brevity include only a textual representation of the communication. Note that the textual representation was
+obtained using \texttt{tcpdump} and has been truncated to show only important data.
+
+\paragraph{Port 113}
+\begin{Verbatim}
+IP 192.168.83.20.1073 > 192.168.83.33.113: Flags [S], seq 0, win 8192, length 0
+IP 192.168.83.33.113 > 192.168.83.20.1073: Flags [R.], seq 0, ack 1, win 0, length 0
+\end{Verbatim}
+
+This communication corresponds to \textbf{case B}. Port 113 is closed on the target machine.
+
+\paragraph{Port 445}
+
+\begin{Verbatim}
+IP 192.168.83.20.1073 > 192.168.83.33.445: Flags [S], seq 0, win 8192, length 0
+IP 192.168.83.33.445 > 192.168.83.20.1073: Flags [S.], seq 4122740187, ack 1, win 29200
+IP 192.168.83.20.1073 > 192.168.83.33.445: Flags [R], seq 1, win 0, length 0
+\end{Verbatim}
+
+This communication corresponds to \textbf{case A}. Port 445 is open on the target machine. This
+is the case with the different behaviour. The difference is due to our TCP/IP stack responding with
+a RST packet because there is no longer a connection associated with the initial packet.
+
+\paragraph{Port 7210}
+\begin{Verbatim}
+IP 192.168.83.20.1073 > 192.168.83.33.7210: Flags [S], seq 0, win 8192, length 0
+\end{Verbatim}
+
+This communication corresponds to \textbf{case C}. The packet to port 7210 was silently dropped.
+
+\paragraph{Port 9920}
+\begin{Verbatim}
+IP 192.168.83.20.1073 > 192.168.83.33.9920: Flags [S], seq 0, win 8192, length 0
+IP 192.168.83.33 > 192.168.83.20: ICMP 192.168.83.33 tcp port 9920 unreachable, length 48
+\end{Verbatim}
+
+This communication corresponds to \textbf{case D}. We got an ICMP message back, telling us that port 9920
+is blocked.
+
+\subsection{rep-3}
+
+Depending on the amount of traffic passing through the routing device it would be hard to
+detect any kind of scanning activity on a busy router. Wireshark is not a suitable tool for analyzing
+large amounts of network traffic data, because \ldots
+\begin{itemize}
+    \item the traffic dump would quickly get quite large, because the packet payload is captured as well.
+    \item Wireshark does not provide suitable binning or aggregation functions.
+    \item we often need statistical/data mining methods to extract useful information from the traffic dump.
+\end{itemize}
+
+\section{Lab Exercise 2}
+
+\subsection{rep-4}
+
+Figure~\ref{figure:command_3_rows} shows the commandline and the first three rows from
+our \textbf{synscan.pcap} file. Note that the \texttt{tcpdump} output is truncated on the
+right side.
+
+\begin{figure}[h]
+\begin{Verbatim}[fontsize=\small]
+team02@pc01:~$ cat synscan.pcap | tcpdump -t -nr - | head -n 3
+IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [P.], seq 4210818527:4210818687, ack 463369472, win 4229, options [nop,nop,TS val 148271 ecr 1080118146], length 160: NFS request xid 3254235248 156 getattr fh 0,0/22
+IP 192.168.83.1.2049 > 192.168.83.20.850: Flags [P.], seq 1:129, ack 160, win 6365, options [nop,nop,TS val 1080118157 ecr 148271], length 128: NFS reply xid 3254235248 reply ok 124 getattr NON 3 ids 0/3 sz 0
+IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [.], ack 129, win 4229, options [nop,nop,TS val 148271 ecr 1080118157], length 0
+\end{Verbatim}
+\caption{\label{figure:command_3_rows} First three rows of our synscan.pcap file}
+\end{figure}
+
+\subsection{rep-5}
+
+We converted our synscan.pcap file to a flow record using the following command:
+
+\begin{Verbatim}
+team02@pc01:~$ rwptoflow --flow-output=synscan.rw synscan.pcap --compression-method=zlib
+\end{Verbatim}
+
+Figure~\ref{figure:command_5_rows} shows the commandline and the first five rows from our
+\textbf{synscan.rw} flow record file.
+
+\begin{figure}[h]
+\begin{Verbatim}
+team02@pc01:~$ rwcut --fields sTime,sIp,dIP,sPort,dPort,ttl,flags synscan.rw | head -n 6
+                  sTime|                 sIP|                 dIP|sPort|dPort|ttl|   flags|
+2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|        192.168.83.1|       192.168.83.20| 2049|  850| 64|   PA   |
+2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|    A   |
+2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|        192.168.83.1|       192.168.83.20| 2049|  850| 64|   PA   |
+\end{Verbatim}
+\caption{\label{figure:command_5_rows} First five rows of our synscan.rw file}
+\end{figure}
+
+\subsection{rep-6}
+
+The start time of our team02.flowrecord.rw file is \textbf{2012/04/26T20:00:00,38257}. This corresponds to
+a unix epoch of \textbf{1335470400,38257}. The end time is \textbf{2012/04/26T20:59:59,34414}. This corresponds
+to a unix epoch of \textbf{1335473999,34414}.
+
+\subsection{rep-7}
+
+Figure~\ref{figure:packets_per_hour} shows the commandline and the number of packets per hour in our
+team02.flowrecord.rw file.
+The are 135358046 packets per hour in our file. This number is in the
+same order of magnitude as the number in the exercise sheet ($\approx 10^8 \text{ to } 10^9$ packets/hour).
+
+\begin{figure}[h]
+\begin{verbatim}
+team02@pc01:~$ rwuniq --sort-output --bin-time=3600 --fields=stime \
+    --values=packet --timestamp-format=epoch --no-titles \
+    --no-final-delimiter --delimited=, workfiles/team02.flowrecord.rw
+1335470400,135358046
+\end{verbatim}
+\caption{\label{figure:packets_per_hour} Number of packets per hour in team02.flowrecord.rw}
+\end{figure}
+
+\subsection{rep-8}
+
+Figure~\ref{figure:unique_ip_per_hour} shows the commandline and the number of unique IP addresses per hour in
+our team02.flowrecord.rw file.
+The are 447148 unique IP addresses per hour in our file. This number is in the
+same order of magnitude as the number in the exercise sheet ($\approx 10^5 \text{ to } 10^6$ unique IPs/hour).
+
+\begin{figure}[h]
+\begin{verbatim}
+team02@pc01:~$ rwuniq --sort-output --bin-time=3600 --fields=stime \
+    --values=sIP --timestamp-format=epoch --no-titles \
+    --no-final-delimiter --delimited=, workfiles/team02.flowrecord.rw
+1335470400,447148
+\end{verbatim}
+\caption{\label{figure:unique_ip_per_hour} Unique IP addresses per hour in team02.flowrecord.rw}
+\end{figure}
+
+\subsection{rep-9}
+
+Since the darkspace is a /8 network it is approximately $\frac{1}{256}^{\text{th}}$ of the whole internet.
+To be more accurate all publicly unusable address ranges would have to be taken into account.
+
+\paragraph{Undesired packets/hour}
+Using this information we arrive at
+\[
+    135358046 * 256 = 34651659776 \approx 34e9
+\] undesired packets per hour for the whole internet. The real values are probably smaller, because
+the publicly unusable address ranges have not been taken into account.
+
+\paragraph{Unique source IPs}
+The number of unique source IPs will roughly be the same for the whole internet as for the darkspace
+($\approx 4e5$ unique IPs per hour).  The real values are probably bigger, because attackers might
+avoid the darkspace or target only specific ranges of the address space.
+
+\paragraph{Pollution}
+
+To give a reliable answer, we would need actual data on the average packet count per hour for the
+whole internet. We checked caida.org, but could not find suitable data. The traffic statistics at DE-CIX or
+AMS-IX only give bandwith and not packet count. Since an IP packet might range from 64 bytes to 1500 bytes transported over ethernet deriving a packet count from bandwidth stats is not reliable.
+
+One major effect of the unwanted packets is that the unwanted traffic uses up
+valuable bandwidth and resources. The unwanted traffic also results in increased power consumption.
+
+\end{document}
