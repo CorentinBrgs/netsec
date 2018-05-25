@@ -37,6 +37,14 @@
 \usepackage{float}
 \usepackage{fancyvrb}
 \usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{inconsolata}
+
+\lstset{
+    frame=single,
+    basicstyle=\small\ttfamily,
+    language=bash
+}
 
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 
@@ -67,24 +75,24 @@
 
 \subsection{rep-1}
 
-We obtained our IPv4 address using the following command:
+We obtained our IPv4 address using the command shown in Listing~\ref{listing:ip-command}.
 
-\begin{Verbatim}
+\begin{lstlisting}[label=listing:ip-command,caption={Command used to obtain IP address}]
 team02@pc01:~$ ip address show dev em1
-\end{Verbatim}
+\end{lstlisting}
 
 Our IPv4 address is \textbf{192.168.83.20}.
 
 \subsection{rep-2}
 
 We sent TCP SYN packets to IPv4 address \textbf{192.168.83.33} on ports 113 (ident), 445 (microsoft-ds),
-7210 and 9920 using the following command:
+7210 and 9920 using the command shown in Listing~\ref{listing:send-syn}.
 
-\begin{verbatim}
+\begin{lstlisting}[label=listing:send-syn,caption={Command used to send the SYN packets}]
 team02@pc01:~$ for port in 113 445 7210 9920; do \
         tgn "ip(dst = 192.168.83.33) /tcp(dst = $port,syn)"; \
     done
-\end{verbatim}
+\end{lstlisting}
 
 We now present our findings for each port. We performed the analysis using \texttt{wireshark}, but for
 brevity include only a textual representation of the communication. Note that the textual representation was
@@ -99,7 +107,6 @@ IP 192.168.83.33.113 > 192.168.83.20.1073: Flags [R.], seq 0, ack 1, win 0, leng
 This communication corresponds to \textbf{case B}. Port 113 is closed on the target machine.
 
 \paragraph{Port 445}
-
 \begin{Verbatim}
 IP 192.168.83.20.1073 > 192.168.83.33.445: Flags [S], seq 0, win 8192, length 0
 IP 192.168.83.33.445 > 192.168.83.20.1073: Flags [S.], seq 4122740187, ack 1, win 29200
@@ -141,43 +148,42 @@ large amounts of network traffic data, because \ldots
 
 \subsection{rep-4}
 
-Figure~\ref{figure:command_3_rows} shows the commandline and the first three rows from
+Listing~\ref{listing:command_3_rows} shows the commandline and the first three rows from
 our \textbf{synscan.pcap} file. Note that the \texttt{tcpdump} output is truncated on the
 right side.
 
-\begin{figure}[h]
-\begin{Verbatim}[fontsize=\small]
+\begin{lstlisting}[
+    caption={First three rows of our synscan.pcap file},
+    label=listing:command_3_rows,
+    escapeinside={§(}{)§}
+]
 team02@pc01:~$ cat synscan.pcap | tcpdump -t -nr - | head -n 3
-IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [P.], seq 4210818527:4210818687, ack 463369472, win 4229, options [nop,nop,TS val 148271 ecr 1080118146], length 160: NFS request xid 3254235248 156 getattr fh 0,0/22
-IP 192.168.83.1.2049 > 192.168.83.20.850: Flags [P.], seq 1:129, ack 160, win 6365, options [nop,nop,TS val 1080118157 ecr 148271], length 128: NFS reply xid 3254235248 reply ok 124 getattr NON 3 ids 0/3 sz 0
-IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [.], ack 129, win 4229, options [nop,nop,TS val 148271 ecr 1080118157], length 0
-\end{Verbatim}
-\caption{\label{figure:command_3_rows} First three rows of our synscan.pcap file}
-\end{figure}
+IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [P.], seq 4210818527:4210818687, ack §(\ldots)§
+IP 192.168.83.1.2049 > 192.168.83.20.850: Flags [P.], seq 1:129, ack 160, win 6365,  §(\ldots)§
+IP 192.168.83.20.850 > 192.168.83.1.2049: Flags [.], ack 129, win 4229, options [nop,§(\ldots)§
+\end{lstlisting}
 
 \subsection{rep-5}
 
-We converted our synscan.pcap file to a flow record using the following command:
+We converted our synscan.pcap file to a flow record using the command shown in
+Listing~\ref{listing:synscan-convert}.
 
-\begin{Verbatim}
+\begin{lstlisting}[label=listing:synscan-convert,caption={Command used to convert synscan.pcap}]
 team02@pc01:~$ rwptoflow --flow-output=synscan.rw synscan.pcap --compression-method=zlib
-\end{Verbatim}
+\end{lstlisting}
 
-Figure~\ref{figure:command_5_rows} shows the commandline and the first five rows from our
+Listing~\ref{listing:command_5_rows} shows the commandline and the first five rows from our
 \textbf{synscan.rw} flow record file.
 
-\begin{figure}[h]
-\begin{Verbatim}
+\begin{lstlisting}[label=listing:command_5_rows,caption={First five rows of our synscan.rw file}]
 team02@pc01:~$ rwcut --fields sTime,sIp,dIP,sPort,dPort,ttl,flags synscan.rw | head -n 6
-                  sTime|                 sIP|                 dIP|sPort|dPort|ttl|   flags|
-2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|   PA   |
-2018/05/15T11:09:44.616|        192.168.83.1|       192.168.83.20| 2049|  850| 64|   PA   |
-2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|    A   |
-2018/05/15T11:09:44.616|       192.168.83.20|        192.168.83.1|  850| 2049| 64|   PA   |
-2018/05/15T11:09:44.616|        192.168.83.1|       192.168.83.20| 2049|  850| 64|   PA   |
-\end{Verbatim}
-\caption{\label{figure:command_5_rows} First five rows of our synscan.rw file}
-\end{figure}
+                  sTime|             sIP|              dIP|sPort|dPort|ttl|   flags|
+2018/05/15T11:09:44.616|   192.168.83.20|     192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|    192.168.83.1|    192.168.83.20| 2049|  850| 64|   PA   |
+2018/05/15T11:09:44.616|   192.168.83.20|     192.168.83.1|  850| 2049| 64|    A   |
+2018/05/15T11:09:44.616|   192.168.83.20|     192.168.83.1|  850| 2049| 64|   PA   |
+2018/05/15T11:09:44.616|    192.168.83.1|    192.168.83.20| 2049|  850| 64|   PA   |
+\end{lstlisting}
 
 \subsection{rep-6}
 
@@ -187,37 +193,33 @@ to a unix epoch of \textbf{1335473999,34414}.
 
 \subsection{rep-7}
 
-Figure~\ref{figure:packets_per_hour} shows the commandline and the number of packets per hour in our
+Listing~\ref{listing:packets_per_hour} shows the commandline and the number of packets per hour in our
 team02.flowrecord.rw file.
 The are 135358046 packets per hour in our file. This number is in the
 same order of magnitude as the number in the exercise sheet ($\approx 10^8 \text{ to } 10^9$ packets/hour).
 
-\begin{figure}[h]
-\begin{verbatim}
+\begin{lstlisting}[label=listing:packets_per_hour,caption={Number of packets per hour in team02.flowrecord.rw}]
 team02@pc01:~$ rwuniq --sort-output --bin-time=3600 --fields=stime \
     --values=packet --timestamp-format=epoch --no-titles \
     --no-final-delimiter --delimited=, workfiles/team02.flowrecord.rw
 1335470400,135358046
-\end{verbatim}
-\caption{\label{figure:packets_per_hour} Number of packets per hour in team02.flowrecord.rw}
-\end{figure}
+\end{lstlisting}
 
 \subsection{rep-8}
 
-Figure~\ref{figure:unique_ip_per_hour} shows the commandline and the number of unique IP addresses per hour in
+Listing~\ref{listing:unique_ip_per_hour} shows the commandline and the number of unique IP addresses per hour in
 our team02.flowrecord.rw file.
 The are 447148 unique IP addresses per hour in our file. This number is in the
 same order of magnitude as the number in the exercise sheet ($\approx 10^5 \text{ to } 10^6$ unique IPs/hour).
 
-\begin{figure}[h]
-\begin{verbatim}
+\begin{lstlisting}[
+    label=listing:unique_ip_per_hour,caption={Unique IP addresses per hour in team02.flowrecord.rw}
+]
 team02@pc01:~$ rwuniq --sort-output --bin-time=3600 --fields=stime \
     --values=sIP --timestamp-format=epoch --no-titles \
     --no-final-delimiter --delimited=, workfiles/team02.flowrecord.rw
 1335470400,447148
-\end{verbatim}
-\caption{\label{figure:unique_ip_per_hour} Unique IP addresses per hour in team02.flowrecord.rw}
-\end{figure}
+\end{lstlisting}
 
 \subsection{rep-9}
 

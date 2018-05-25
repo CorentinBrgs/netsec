@@ -13,5 +13,5 @@ clean:
 	rm -f ${MAIN}.aux
 	rm -f ${MAIN}.log
 
-full_clean: clean
+remove: clean
 	rm -f ${MAIN}.pdf
