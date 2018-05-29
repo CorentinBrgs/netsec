@@ -1,0 +1,7 @@
+rep-16
+
+	https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml
+	6=tcp, 17=udp, 1=icmp
+
+rep-18:
+	in the combined data addresses are collapsed (same address gets a tcp, udp, icmp, ...)

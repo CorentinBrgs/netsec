@@ -5,14 +5,16 @@ function team02_rep14
         result = round([nansum(data), nanmean(data), nanmedian(data), nanstd(data)] ./ 10e6, 3);
     end
 
+    disp('---- Daily avg ---');
     [~, bytes, packets, ip_s, ip_d] = read_custom_csv('global_last10years.csv');
     for col = horzcat(bytes, packets, ip_s, ip_d)
         fprintf('%.3f %.3f %.3f %.3f\n', stats(col));
     end
     
-    disp('-----');
+    disp('----- Hourly avg ---');
     
-    [~, bytes, packets, ip_s, ip_d] = read_custom_csv('global_last10years.csv');
+    % WARNING: order is different
+    [~, packets, bytes, ip_s, ip_d] = read_custom_csv('~/workfiles/Feb2017_gen.csv');
     for col = horzcat(bytes, packets, ip_s, ip_d)
         fprintf('%.3f %.3f %.3f %.3f\n', stats(col));
     end
