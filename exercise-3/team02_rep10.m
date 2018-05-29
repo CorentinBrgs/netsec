@@ -48,7 +48,7 @@ function team02_rep10
     legend('bytes', 'packets', 'ip source', 'ip dest');
     datetick('x', 'mm/yy');
     xlabel('days of observed time span');
-    title("Combined plot of normalized and smoothed signals");
+    title('Combined plot of normalized and smoothed signals');
     grid on
     set(gca, 'layer', 'top');
     xlim([min(timestamps) max(timestamps)]);
