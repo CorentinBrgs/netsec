@@ -5,3 +5,19 @@ rep-16
 
 rep-18:
 	in the combined data addresses are collapsed (same address gets a tcp, udp, icmp, ...)
+
+
+
+formats:
+==> Feb2017_gen.csv <==
+timestamps,#packets,#bytes,#unique_IP_sources,#unique_IP_destinations
+
+==> Feb2017_proto.csv <==
+timestamp, 6 · # Packets, 6 · # Unique Source IPs, 6 · # Unique Destination IPs,17 · # Packets, 17 · # Unique Source IPs, 17 · # Unique Destination IPs, 1 · # Packets, 1 · # Unique Source IPs, 1 · # Unique Destination IPs
+
+==> Feb2017_TCPdstport.csv <==
+timestamp, 445,23,502,25,22,21,443,81,80,993
+
+==> global_last10years.csv <==
+timestamp, # Bytes,# Packets,# Unique Source IPs,# Unique Destination IPs
+
