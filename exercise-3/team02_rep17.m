@@ -2,7 +2,7 @@ function team02_rep17
     % TODO change filename
     % WARNING: order is switched
     [~, combined_packets, ~, combined_ip_s, combined_ip_d] = read_custom_csv('~/workfiles/Feb2017_gen.csv');
-    [tcp, udp, icmp] = read_custom_protocol_csv('~/workfiles/Feb2017_proto.csv');
+    [~, tcp, udp, icmp] = read_custom_protocol_csv('~/workfiles/Feb2017_proto.csv');
     % packets, ip_s, ip_d
     
    function result = packets(data)
@@ -70,10 +70,10 @@ function team02_rep17
         saveas(gcf, strcat('plots/rep_17_', my_title, '.png'), 'png')
     end
     
-    %stat_plot(tcp_percentages, 'TCP')
-    %stat_plot(udp_percentages, 'UDP')
-    %stat_plot(icmp_percentages, 'ICMP')
-    %stat_plot(others_percentages, 'OTHERS')
+    stat_plot(tcp_percentages, 'TCP')
+    stat_plot(udp_percentages, 'UDP')
+    stat_plot(icmp_percentages, 'ICMP')
+    stat_plot(others_percentages, 'OTHERS')
     
     % Optional part
     
