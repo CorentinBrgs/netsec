@@ -7,6 +7,8 @@ function team02_rep21()
     tcp_packets = tcp(:,1);
     tcp_ip_s = tcp(:,2);
     
+    % (a)
+    
     figure
     subplot(1, 2, 1);
     plot(ts, tcp_packets);
@@ -47,6 +49,8 @@ function team02_rep21()
     packet_amp = amplitudes(tcp_packets);
     ip_s_amp = amplitudes(tcp_ip_s);
     
+    % (b) 
+    
     figure
     subplot(1, 2, 1);
     plot_spectrum(packet_amp);
@@ -68,4 +72,6 @@ function team02_rep21()
 
     max_fft_info(packet_amp);
     max_fft_info(ip_s_amp);
+    
+    % TODO (c)
 end

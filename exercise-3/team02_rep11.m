@@ -18,14 +18,14 @@ function team02_rep11
     [minimum_coeff, idx] = min(correlations);
     fprintf('Minimum linear correlation coeff: %f (%s)\n', minimum_coeff, names{idx});
 
-    names_signal = {'Bytes', 'Packets', 'IPd', 'IPs'};
-    % FIXME: Just do a case-by-case comparison
+    names_signal = {'Bytes', 'Packets', 'IPs', 'IPd'};
+
     means = [ ...
-        mean([correlations(1), correlations(2), correlations(3)]), ...
-        mean([correlations(1), correlations(4), correlations(5)]), ...
-        mean([correlations(3), correlations(5), correlations(6)]), ...
-        mean([correlations(2), correlations(4), correlations(6)])
+        % Bytes         | Packets         | IPs           | IPd
+        correlations(1), correlations(1), correlations(2), correlations(3); ...
+        correlations(2), correlations(4), correlations(4), correlations(5); ...
+        correlations(3), correlations(5), correlations(6), correlations(6)
     ];
-    [~, idx_signal] = min(means);
-    fprintf('Signal with lower correlation than others: %s\n', names_signal{idx_signal});
+    disp(names_signal);
+    disp(means);
 end
