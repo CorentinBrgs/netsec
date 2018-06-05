@@ -14,20 +14,28 @@ function team02_rep22
         std_day = std(days, 0, 2);
     end
 
-    function plot_day(data, filename)
+    function plot_day(data)
         [mean_day, median_day, std_day] = average_day(data);
         hours = 0:23;
         figure
-        plot(hours, mean_day, 'r-')
+        errorbar(hours, mean_day, std_day, 'r-')
         hold on
-        plot(hours, median_day, 'g-')
-        plot(hours, std_day, 'b-')
-        legend('mean', 'median', 'stddev');
-        saveas(gcf, strcat('plots/rep_22_', filename, '.png'), 'png')
+        errorbar(hours, median_day, std_day, 'g-')
+        plot(hours, std_day, 'b-');
+        legend({'mean', 'median', 'stddev'}, 'Location', 'southwest');
     end
 
-    plot_day(tcp_packets, 'packets')
-    plot_day(tcp_ip_s, 'ip_s')
+    plot_day(tcp_packets)
+    title('Packets');
+    xlabel('hours');
+    ylabel('# packets');
+    saveas(gcf, 'plots/rep_22_packets.png', 'png')    
+    
+    plot_day(tcp_ip_s)
+    xlabel('hours');
+    title('IP sources');
+    ylabel('# IP sources');
+    saveas(gcf, 'plots/rep_22_ip_s.png', 'png')  
     
     % rep-23
     

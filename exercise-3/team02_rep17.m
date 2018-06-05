@@ -52,20 +52,24 @@ function team02_rep17
         boxplot(ax1, packets(data), 'Labels', {''})
         ylabel(ax1, 'Packets');
         xlabel(ax1, 'Packets / hour');
+        grid on
+        set(gca, 'layer', 'top');
         
         ax2 = subplot(1, 3, 2);
         boxplot(ax2, ip_s(data), 'Labels', {''})
         ylabel(ax2, 'IPs');
         xlabel(ax2, 'IPs / hour');
         title(my_title)      
+        grid on
+        set(gca, 'layer', 'top');        
         
         ax3 = subplot(1, 3, 3);
         boxplot(ax3, ip_d(data), 'Labels', {''})
         ylabel(ax3, 'IPd');
         xlabel(ax3, 'IPd / hour');
-        
         grid on
         set(gca, 'layer', 'top');
+        
         saveas(gcf, strcat('plots/rep_17_', my_title, '.png'), 'png')
     end
     

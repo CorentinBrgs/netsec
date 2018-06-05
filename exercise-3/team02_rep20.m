@@ -1,8 +1,7 @@
 function team02_rep20()
     [port_data, column_names] = read_tcp_ports_csv('~/workfiles/Feb2017_TCPdstport.csv');
-    [~, tcp, ~, ~] = read_custom_protocol_csv('~/workfiles/Feb2017_proto.csv');
-
-    ts = port_data(:,1);
+    
+    ts = epoch_to_date(port_data(:,1));
     % We don't want to analyze the timestamp
     port_data = port_data(:,2:end);
     column_names = column_names(:,2:end);
@@ -22,7 +21,7 @@ function team02_rep20()
 
     L_name = column_names(1);
     L_mean = means(1);
-    L_median = medians(end);
+    L_median = medians(1);
     L = port_data(:,1);
 
     H_name = column_names(end);
@@ -38,8 +37,11 @@ function team02_rep20()
     hold on;
     plot(xlim, [L_mean, L_mean], 'r');
     plot(xlim, [L_median, L_median], 'g');
-    title(L_name);
+    legend('signal', 'mean', 'median');
+    title(strcat(L_name, ' (L)'));
     ylabel('# packets / hour');
+    datetick('x', 'dd');
+    xlabel('days of Feb 2017');
     grid on
     set(gca, 'layer', 'top');
 
@@ -48,8 +50,11 @@ function team02_rep20()
     hold on;
     plot(xlim, [H_mean, H_mean], 'r');
     plot(xlim, [H_median, H_median], 'g');
-    title(H_name);
+    legend('signal', 'mean', 'median');
+    title(strcat(H_name, ' (H)'));
     ylabel('# packets / hour');
+    datetick('x', 'dd');
+    xlabel('day of Feb 2017');
     grid on
     set(gca, 'layer', 'top');
     
@@ -58,16 +63,20 @@ function team02_rep20()
     hold on;
     line([L_mean, L_mean], ylim, 'Color', 'r');
     line([L_median, L_median], ylim, 'Color', 'g');    
-    title(L_name);
+    legend('signal', 'mean', 'median');
+    title(strcat(L_name, ' (L)'));
     grid on
+    xlabel('#packets / hour');
     set(gca, 'layer', 'top');
     
     subplot(2,2,4);
     histogram(H, 100, 'Normalization', 'probability');
     line([H_mean, H_mean], ylim, 'Color', 'r');
-    line([H_median, H_median], ylim, 'Color', 'g');    
-    title(H_name);
+    line([H_median, H_median], ylim, 'Color', 'g');
+    legend('signal', 'mean', 'median');
+    title(strcat(H_name, '(H)'));
     grid on
+    xlabel('#packets / hour');
     set(gca, 'layer', 'top');
 
     saveas(gcf, 'plots/rep_20.png', 'png')

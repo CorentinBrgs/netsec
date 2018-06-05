@@ -6,7 +6,7 @@ function team02_rep14
     end
 
     disp('---- Daily avg ---');
-    [~, bytes, packets, ip_s, ip_d] = read_custom_csv('~/worfiles/global_last10years.csv');
+    [~, bytes, packets, ip_s, ip_d] = read_custom_csv('~/workfiles/global_last10years.csv');
     for col = horzcat(bytes, packets, ip_s, ip_d)
         fprintf('%.3f %.3f %.3f %.3f\n', stats(col));
     end

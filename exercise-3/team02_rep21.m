@@ -11,20 +11,23 @@ function team02_rep21()
     
     figure
     subplot(1, 2, 1);
-    plot(ts, tcp_packets);
+    plot(epoch_to_date(ts), tcp_packets);
     title('Packets');
     ylabel('# packets / hour');
+    datetick('x', 'mm/dd');
+
     
     subplot(1, 2, 2);
-    plot(ts, tcp_ip_s);
+    plot(epoch_to_date(ts), tcp_ip_s);
     title('IP source');
     ylabel('# IP source / hour');
-    
+    datetick('x', 'mm/dd');
+
     saveas(gcf, 'plots/rep_21_a.png', 'png')
     
     function plot_spectrum(amplitudes)
         k = (1:(N2+1));
-        stem(k, amplitudes(1:(N2 + 1)), 'rx'); 
+        stem(k, amplitudes(1:(N2 + 1)), 'marker', 'none'); 
         xlim([1 N2+1]);
         xlabel('k');
         ylabel('Amplitude');
@@ -54,10 +57,10 @@ function team02_rep21()
     figure
     subplot(1, 2, 1);
     plot_spectrum(packet_amp);
-    title('Packet Amplitude spectrum');
+    title('Packet spectrum');
     subplot(1, 2, 2);
     plot_spectrum(ip_s_amp);
-    title('IP source Amplitude spectrum');
+    title('IPs spectrum');
     
     saveas(gcf, 'plots/rep_21_b.png', 'png')
 
@@ -67,11 +70,31 @@ function team02_rep21()
     
     function max_fft_info(amplitudes)
         [v, k] = max(amplitudes);
-        fprintf('max: %.3f max_k: %d period: %.3f hours\n', v, k, period(k));
+        fprintf('max: %.3f max_k: %d period: %.3f hours (%.3f days)\n', v, k, period(k), period(k) / 24);
     end
 
+    % (c)
     max_fft_info(packet_amp);
     max_fft_info(ip_s_amp);
     
-    % TODO (c)
+    [max_amps max_ks] = sort(packet_amp, 'descend');
+    
+    function report_fft(max_amps, max_ks)
+        for i=1:20
+            disp(max_amps(i));
+            disp(period(max_ks(i)) / 24);
+            disp(period(max_ks(i)));
+            disp('--');
+        end
+    end
+    
+    disp('packets');
+    [a, k] = sort(packet_amp, 'descend');
+    report_fft(a, k);
+    
+    disp('ip_s');
+    [a, k] = sort(ip_s_amp, 'descend');
+    report_fft(a, k);
+ 
+
 end

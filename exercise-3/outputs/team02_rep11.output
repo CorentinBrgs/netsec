@@ -1,2 +1,14 @@
+----------------------------------------------------
+	Your MATLAB license will expire in 55 days.
+	Please contact your system administrator or
+	MathWorks to renew this license.
+    ----------------------------------------------------
+
+	
+
 Minimum linear correlation coeff: 0.588568 (IPs <-> IPd)
-Signal with lower correlation than others: IPs
+    'Bytes'    'Packets'    'IPs'    'IPd'
+
+    0.9655    0.9655    0.7203    0.9340
+    0.7203    0.6105    0.6105    0.9732
+    0.9340    0.9732    0.5886    0.5886
