@@ -1,5 +1,4 @@
 function team02_rep17
-    % TODO change filename
     % WARNING: order is switched
     [~, combined_packets, ~, combined_ip_s, combined_ip_d] = read_custom_csv('~/workfiles/Feb2017_gen.csv');
     [~, tcp, udp, icmp] = read_custom_protocol_csv('~/workfiles/Feb2017_proto.csv');
