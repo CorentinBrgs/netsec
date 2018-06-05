@@ -1,5 +1,5 @@
 function team02_rep13
-    [timestamps, ~, ~, ip_s, ~] = read_custom_csv('global_last10years.csv');
+    [timestamps, ~, ~, ip_s, ~] = read_custom_csv('~/workfiles/global_last10years.csv');
     % FIXME Recheck if the data is really seperated
     [peaks, dates] = findpeaks(ip_s, timestamps, 'MinPeakHeight', 1.5*10^6);
     dates = arrayfun(@datestr, dates, 'UniformOutput', false);

@@ -1,6 +1,6 @@
 function team02_rep11
 % rep-11
-    [~, bytes, packets, ip_s, ip_d] = read_custom_csv('global_last10years.csv');
+    [~, bytes, packets, ip_s, ip_d] = read_custom_csv('~/workfiles/global_last10years.csv');
 
     function result = correlation(a, b)
         result = unique(min(corrcoef(a, b)));

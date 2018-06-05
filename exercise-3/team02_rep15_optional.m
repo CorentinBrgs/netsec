@@ -1,5 +1,5 @@
 function team02_rep15_optional
-    [~, bytes_daily, packets_daily, ip_s_daily, ip_d_daily] = read_custom_csv('global_last10years.csv');
+    [~, bytes_daily, packets_daily, ip_s_daily, ip_d_daily] = read_custom_csv('~/workfiles/global_last10years.csv');
     % WARNING order is different
     [~, packets_hourly, bytes_hourly, ip_s_hourly, ip_d_hourly] = read_custom_csv('~/workfiles/Feb2017_gen.csv');
 

@@ -1,6 +1,6 @@
 function team02_rep10
 % rep-10
-    [timestamps, bytes, packets, ip_s, ip_d] = read_custom_csv('global_last10years.csv');
+    [timestamps, bytes, packets, ip_s, ip_d] = read_custom_csv('~/workfiles/global_last10years.csv');
 
     function save_stem_plot(data, my_title, y_label, filename)
     % Do a stem plot of data in millions and write it to filename.png

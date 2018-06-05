@@ -34,6 +34,8 @@ function team02_rep22
     [packets_mean, packets_median] = average_day(tcp_packets);
     [ip_s_mean, ip_s_median] = average_day(tcp_ip_s);
     
-    corrcoef(packets_mean, ip_s_mean)
-    corrcoef(packets_median, ip_s_median)
+    disp('mean');
+    disp(corrcoef(packets_mean, ip_s_mean));
+    disp('median');
+    disp(corrcoef(packets_median, ip_s_median));
 end

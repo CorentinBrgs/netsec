@@ -1,5 +1,5 @@
 function team02_rep13_optional
-    [timestamps, bytes, ~, ~, ~] = read_custom_csv('global_last10years.csv');
+    [timestamps, bytes, ~, ~, ~] = read_custom_csv('~/workfiles/global_last10years.csv');
     
     timestamps = timestamps(timestamps<=datenum('2014-01-01'));
     bytes = bytes(timestamps>0);
