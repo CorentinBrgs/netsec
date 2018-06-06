@@ -10,8 +10,7 @@ all: ${MAIN}.pdf
 .PHONY: clean remove
 
 clean:
-	rm -f ${MAIN}.aux
-	rm -f ${MAIN}.log
+	rm -f ${MAIN}.{log,aux,lox,out}
 
 remove: clean
 	rm -f ${MAIN}.pdf
