@@ -297,13 +297,32 @@ Table~\ref{table:rep-17-ipd} shows statistical information for IP destinations/h
     \caption{\label{table:rep-17-ipd} Statistical information for IP destinations per hour}
 \end{table}
 
-\fxerror{boxplot per signal}
-%Figure~\ref{figure:rep-17} shows boxplots for the data from \texttt{Feb2017_proto.csv}.
+Figure~\ref{figure:rep-17} shows
+boxplots for the data from \texttt{Feb2017\_proto.csv} separated by protocol and signal.
 
-%\begin{figure}[h]
-%    \includegraphics[width=\textwidth]{../exercise-3/plots/rep_17}
-%    \caption{\label{figure:rep-17} Boxplots for data from \texttt{Feb2017_proto.csv}}
-%\end{figure}
+\begin{figure}[h]
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_TCP}
+        \caption{TCP}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_UDP}
+        \caption{UDP}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_ICMP}
+        \caption{ICMP}
+    \end{subfigure}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_OTHERS}
+        \caption{Others}
+    \end{subfigure}
+    \caption{\label{figure:rep-17} Boxplots separated by protocol and signal}
+\end{figure}
 
 \paragraph{Optional}
 
@@ -377,7 +396,7 @@ on port 80. The connection attempts to port 80 are part of automated scanning fo
         Mean &   39.7 & 3.1 & 1.6 & 0.9  \\
         StdDev & 7.3  & 1.5 & 0.3 & 0.6   \\
     \end{tabular}
-    \caption{\label{table:rep-19-absolute} Statistical information for TCP packets [in percent]}
+    \caption{\label{table:rep-19-percentage} Statistical information for TCP packets [in percent]}
 \end{table}
 
 \subsection{rep-20 \codelink{code:rep-20}}
