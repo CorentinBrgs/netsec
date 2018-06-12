@@ -23,7 +23,7 @@
 \usepackage{subcaption}
 \usepackage[draft]{fixme}
 \usepackage{float}
-\usepackage{fontawesome}
+%\usepackage{fontawesome}
 
 \usepackage{hyperref}
 \hypersetup{
@@ -34,7 +34,7 @@
 }
 
 \newcommand{\codelink}[1]{%
-    \hyperref[#1]{\quad\faArrowCircleRight\enskip Matlab Code (Listing~\ref{#1})}%
+    \hyperref[#1]{\quad$\rightarrow$\enskip Matlab Code (Listing~\ref{#1})}%
 }
 
 \lstset{
@@ -109,7 +109,7 @@ and smoothed with a moving average filter.
 \subsection{rep-11 \codelink{code:rep-11}}
 
 The signal that shows the lower correlation to the other signals is \textbf{IP sources}. The minimum
-linear correlation coefficient is \textbf{0.588568} between the signals \textbf{IP sources} and
+linear correlation coefficient is \textbf{0.5886} between the signals \textbf{IP sources} and
 \textbf{IP destinations}. See Table~\ref{table:rep-11} for the raw data.
 
 \begin{table}[H]
@@ -211,8 +211,11 @@ statistics for the data from \texttt{Feb2017\_gen.csv}.
 
 \subsection{rep-15}
 
-The values do not coincide. February 2017 seems to be a month that is not really representative for the
-data collected over a span of 10 years.
+The statistical moments (mean, median, standard deviation) do not coincide. February 2017 seems to be a month
+that is not really representative for the
+data collected over a span of 10 years. It is interesting to note, that the relation in size between the
+four signals is roughly the same. The sum values for the 10 year span are around double the sum values for
+the data from February 2017.
 
 \paragraph{Optional \codelink{code:rep-15-optional}}
 Figure~\ref{figure:rep-15-optional} shows the boxplots for hourly and daily averaged data.
@@ -220,7 +223,7 @@ Figure~\ref{figure:rep-15-optional} shows the boxplots for hourly and daily aver
 \begin{figure}[h]
     \centering
     \includegraphics[width=\textwidth]{../exercise-3/plots/rep_15_optional}
-    \caption{\label{figure:rep-15-optional} Boxplots for hourly and daily averaged data}
+    \caption{\label{figure:rep-15-optional} Boxplots for hourly (February 2017) and daily (last 10 years) averaged data}
 \end{figure}
 
 A difference between the box plots for the hourly and daily data are the positions of
@@ -229,7 +232,8 @@ be in the vicinity of the first quartile, whereas the medians in the hourly aver
 show no clear tendency.
 A second noticeable difference are the outliers. All outliers in the daily averaged data are
 above the whiskers, whereas the boxplots for the hourly averaged data show outliers below and
-above the whiskers.
+above the whiskers. This is explained by the fact that the volume of packets, bytes and IP destinations
+had a major increase during the last three years (see Figure~\ref{figure:rep-10-optional}).
 
 \subsection{rep-16}
 
@@ -252,33 +256,33 @@ a three-way handshake, but also uses port numbers to address applications.
 
 \subsection{rep-17 \codelink{code:rep-17}}
 
-Table~\ref{table:rep-17-packets} shows statistical information for Packets/hour grouped by protocol.
-Table~\ref{table:rep-17-ips} shows statistical information for IP sources/hour grouped by protocol.
-Table~\ref{table:rep-17-ipd} shows statistical information for IP destinations/hour grouped by protocol.
+Table~\ref{table:rep-17-packets} shows statistical information for the number of Packets per hour grouped by protocol.
+Table~\ref{table:rep-17-ips} shows statistical information for the number of IP sources per hour grouped by protocol.
+Table~\ref{table:rep-17-ipd} shows statistical information for the number of IP destinations per hour grouped by protocol.
 
 \begin{table}[H]
     \parbox{.45\linewidth}{
         \centering
-        \begin{tabular}{l|ccc}
-                & Mean  & Median & StdDev \\
+        \begin{tabular}{l|r|r|r}
+                & Mean [\%]  & Median [\%] & StdDev [\%] \\
                    \hline
-            TCP    & 0.840 & 0.833  & 0.048 \\
-            UDP    & 0.114 & 0.113  & 0.032 \\
-            ICMP   & 0.043 & 0.054  & 0.026 \\
-            Others & 0.004 & 0.004  & 0.001 \\
+            TCP    & 84.0 & 83.3  & 4.8 \\
+            UDP    & 11.4 & 11.3  & 3.2 \\
+            ICMP   & 4.30 & 5.4  & 2.6 \\
+            Others & 0.04 & 0.04  & 0.1 \\
         \end{tabular}
         \caption{\label{table:rep-17-packets} Statistical information for Packets per hour}
     }
     \parbox{.1\linewidth}{}
     \parbox{.45\linewidth}{
         \centering
-        \begin{tabular}{l|ccc}
-                   & Mean  & Median & StdDev \\
+        \begin{tabular}{l|r|r|r}
+                   & Mean [\%]  & Median [\%] & StdDev [\%] \\
                    \hline
-            TCP    &   0.592 & 0.519  & 0.143  \\
-            UDP    &   0.336 & 0.343  & 0.034  \\
-            ICMP   &   0.175 & 0.225  & 0.106  \\
-            Others &  -0.103 & -0.103 & 0.044  \\
+            TCP    &   59.2 & 51.9  & 14.3  \\
+            UDP    &   33.6 & 34.3  & 3.4  \\
+            ICMP   &   17.5 & 22.5  & 10.6  \\
+            Others &  -10.3 & -10.3 & 4.4  \\
         \end{tabular}
         \caption{\label{table:rep-17-ips} Statistical information for IP sources per hour}
     }
@@ -286,13 +290,13 @@ Table~\ref{table:rep-17-ipd} shows statistical information for IP destinations/h
 
 \begin{table}[H]
     \centering
-    \begin{tabular}{l|ccc}
-               & Mean  & Median & StdDev \\
+    \begin{tabular}{l|r|r|r}
+               & Mean  [\%] & Median [\%] & StdDev [\%] \\
                \hline
-        TCP    &  0.890 & 0.883&  0.039   \\
-        UDP    &  0.158 & 0.155&  0.045   \\
-        ICMP   &  0.080 & 0.104&  0.048   \\
-        Others &  -0.127&  -0.142&  0.042 \\
+        TCP    &  89.0 & 88.3&  3.9   \\
+        UDP    &  15.8 & 15.5&  4.5   \\
+        ICMP   &  8.0 & 10.4&  4.8   \\
+        Others &  -12.7&  -14.2&  4.2 \\
     \end{tabular}
     \caption{\label{table:rep-17-ipd} Statistical information for IP destinations per hour}
 \end{table}
@@ -303,22 +307,22 @@ boxplots for the data from \texttt{Feb2017\_proto.csv} separated by protocol and
 \begin{figure}[h]
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_TCP}
+        \includegraphics[width=\textwidth]{../exercise-3/plots/rep_17_TCP}
         \caption{TCP}
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_UDP}
+        \includegraphics[width=\textwidth]{../exercise-3/plots/rep_17_UDP}
         \caption{UDP}
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_ICMP}
+        \includegraphics[width=\textwidth]{../exercise-3/plots/rep_17_ICMP}
         \caption{ICMP}
     \end{subfigure}
     \begin{subfigure}{.5\textwidth}
         \centering
-        \includegraphics[width=0.7\textwidth]{../exercise-3/plots/rep_17_OTHERS}
+        \includegraphics[width=\textwidth]{../exercise-3/plots/rep_17_OTHERS}
         \caption{Others}
     \end{subfigure}
     \caption{\label{figure:rep-17} Boxplots separated by protocol and signal}
@@ -355,9 +359,9 @@ will only be counted once.
 
 \subsection{rep-19 \codelink{code:rep-19}}
 
-The four most used ports in descending order are port 23, port 22, port 445 and port 80.
+The four most used destination ports in descending order are port 23, port 22, port 445 and port 80.
 Table~\ref{table:rep-19-absolute} shows statistical information in absolute values for the
-four most used ports in the data file. Table~\ref{table:rep-19-percentage} shows the statistical
+four most used destination ports in the data file. Table~\ref{table:rep-19-percentage} shows the statistical
 information in percentages.
 
 \paragraph{Port 23 (Telnet)}
@@ -371,7 +375,8 @@ SSH daemon listening on port 22. The connection attempts to port 22 are part of 
 for open SSH ports - often followed by a dictionary based password guessing attack.
 
 \paragraph{Port 445 (Microsoft Directory Service)}
-We see traffic to this port in the darkspace, because the ``Microsoft Directory Service'' 
+We see traffic to this port in the darkspace, because the ``Microsoft Directory Service'' is often
+exploited and various vulnerabilites in it where found in recent years.
 
 \paragraph{Port 80 (HTTP)}
 We see traffic to this port, because many hosts on the internet have a webserver running
@@ -411,9 +416,11 @@ the data with the highest relative difference between mean and median.
 \end{figure}
 
 
-\fxerror{Wording - fill in!}
-The mean/median better represents the average value of a dataset. why? skewness with regard to distributions
-An example for a distribution where the mean or the 
+The median better represents the average value of a dataset, because by definition 50 percent of the values in
+the distribution will be below the median, and the other 50 percent will be above the median. The median splits the
+distribution into half.
+An example for a distribution where the mean is not representative of the value distribution, would be an almost
+constant distribution with some extreme high or low outliers.
 
 \subsection{rep-21 \codelink{code:rep-21}}
 
@@ -486,7 +493,7 @@ sources per hour.
 \subsection{rep-22 \codelink{code:rep-22}}
 
 Figure~\ref{figure:rep-22} shows an average day for the number of packets per hour and the number of
-unique IP sources per hour for February 2017.
+unique IP sources per hour for February 2017. The size of the error bars represents the standard deviation.
 
 \begin{figure}[h]
     \begin{subfigure}{.5\textwidth}
@@ -523,6 +530,8 @@ When averaging with the median the correlation coefficient of the signals is sli
 But the signals are not correlated. For the averaged signal for unique IP sources per hour
 a prominent peak at around 2 pm can be observed. For the averaged signal of Packets per hour no
 such prominent peak exists.
+The peak in the unique IP sources per hour could be explained by the fact that somehow more infected
+PCs are running around this time of the day.
 
 \FloatBarrier
 \section{Lab Exercise 4}
@@ -594,8 +603,8 @@ bypass not properly configured firewalls.
 
 Figure~\ref{figure:rep-27} shows the TTL frequency distribution. Note the two peaks around a
 TTL of 45 and a TTL of 107.
-
-\fxerror{Explain!}
+The peaks in the TTL distribution might be due to the fact, that most of the sources are located ``next
+to each other'' (in terms of network connectivity) and therefore take the same number of hops to reach the darkspace.
 
 \begin{figure}[h]
     \centering
@@ -607,7 +616,7 @@ TTL of 45 and a TTL of 107.
 
 The most recurring IP source in our dataset is the IP address \texttt{236.196.32.152}.
 It is exclusively using port \texttt{80} as a destination port and hitting ports \texttt{3072}
-and \texttt{1024} across a range of IP destinations. The source is performing a horizontal port scans
+and \texttt{1024} across a range of IP destinations. The source is performing horizontal port scans
 for ports 3072 and 1024.
 
 \subsection{rep-29}
