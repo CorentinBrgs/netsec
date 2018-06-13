@@ -108,7 +108,7 @@ and smoothed with a moving average filter.
 
 \subsection{rep-11 \codelink{code:rep-11}}
 
-The signal that shows the lower correlation to the other signals is \textbf{IP sources}. The minimum
+The signal that shows the lowest correlation to the other signals is \textbf{IP sources}. The minimum
 linear correlation coefficient is \textbf{0.5886} between the signals \textbf{IP sources} and
 \textbf{IP destinations}. See Table~\ref{table:rep-11} for the raw data.
 
@@ -131,10 +131,10 @@ signals somehow stopped sending traffic.
 
 \subsection{rep-12 \codelink{code:rep-12}}
 
-The number of IP sources is bigger in average than the number of darkspace addresses
-receiving packets. There are on average around ten times more IP sources than IP destinations.
-This makes sense, because the darkspace is only a small part of the internet address-space, but
-the IP sources are taken from the whole address-space.
+The number of IP destinations is bigger in average than the number of IP sources.
+There are on average around ten times more IP destinations than IP sources.
+This makes sense, because a presumably small part of the internet (attackers, botnets, \ldots)
+is scanning/attacking the whole internet, including the darkspace.
 
 \subsection{rep-13 \codelink{code:rep-13}}
 
@@ -193,7 +193,7 @@ statistics for the data from \texttt{Feb2017\_gen.csv}.
         \# IP src [millions]     & 123.613 & 0.035 & 0.020 & 0.031 \\
         \# IP dst  [millions]    & 1150.796 & 0.329 & 0.142 & 0.330 \\
     \end{tabular}
-    \caption{\label{table:rep-14-daily} Statistics for daily data}
+    \caption{\label{table:rep-14-daily} Statistics for daily data (\texttt{global\_last10years.csv})}
 \end{table}
 
 \begin{table}[H]
@@ -206,7 +206,7 @@ statistics for the data from \texttt{Feb2017\_gen.csv}.
         \# IP src  [millions]    & 59.651 & 0.089 & 0.091 & 0.018        \\
         \# IP dst   [millions]   & 619.875 & 0.922 & 0.931 & 0.070       \\
     \end{tabular}
-    \caption{\label{table:rep-14-hourly} Statistics for hourly data}
+    \caption{\label{table:rep-14-hourly} Statistics for hourly data (\texttt{Feb2017\_gen.csv})}
 \end{table}
 
 \subsection{rep-15}
@@ -370,7 +370,7 @@ telnet daemon listening on port 23 - often with minimal password protection. The
 attempts to port 23 are part of automated scanning for open telnet ports.
 
 \paragraph{Port 22 (SSH)}
-We see traffic to this port in the darkspace, because many host on the internet have an
+We see traffic to this port in the darkspace, because many hosts on the internet have an
 SSH daemon listening on port 22. The connection attempts to port 22 are part of automated scanning
 for open SSH ports - often followed by a dictionary based password guessing attack.
 
@@ -506,7 +506,7 @@ unique IP sources per hour for February 2017. The size of the error bars represe
         \includegraphics[width=\textwidth]{../exercise-3/plots/rep_22_packets}
         \caption{Average day for packets per hour}
     \end{subfigure}
-    \caption{\label{figure:rep-22} Average days}
+    \caption{\label{figure:rep-22} Average days for February 2017}
 \end{figure}
 
 \subsection{rep-23 \codelink{code:rep-22}} % NOTE: codelink is correct!
@@ -597,14 +597,17 @@ The rate of appearance concering the used protocols was roughly what we expected
 445 as the top most used destination port was also no big surprise, but ports 10320 and 3072 where
 somewhat surprising, because as far as we know no popular applications use these two ports.
 Interesting to note are the two top most source ports 80 and 0. These ports are probably used to
-bypass not properly configured firewalls.
+bypass improperly configured firewalls.
 
 \subsection{rep-27}
 
 Figure~\ref{figure:rep-27} shows the TTL frequency distribution. Note the two peaks around a
 TTL of 45 and a TTL of 107.
 The peaks in the TTL distribution might be due to the fact, that most of the sources are located ``next
-to each other'' (in terms of network connectivity) and therefore take the same number of hops to reach the darkspace.
+to each other'' (in terms of network connectivity) and therefore take the same number of hops to reach
+the darkspace, assuming that the used IP stacks use the same initial value for TTL.
+The peaks could also mean, that the darkspace is somehow connected in a way that for most sources 
+on the internet it takes one of two fixed amouts of hops to reach the darkspace.
 
 \begin{figure}[h]
     \centering
@@ -646,7 +649,7 @@ destinations. Somehow one IP destination is more interesting than the others.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[clip, trim=1cm 17cm 2cm 2cm, width=0.70\textwidth]%
+    \includegraphics[clip, trim=1cm 18cm 2cm 2cm, width=0.8\textwidth]%
     {../exercise-4/rep_30_one_ip_more_interesting.pdf}
     \caption{\label{figure:rep-30} Frequency of connection attempts to port 445 from \texttt{187.154.74.45}}
 \end{figure}
@@ -694,6 +697,7 @@ destinations. Somehow one IP destination is more interesting than the others.
     language=Matlab,caption={Matlab code to solve rep-19},label=code:rep-19%
 ]{../exercise-3/team02_rep19.m}
 
+\newpage
 \lstinputlisting[%
     language=Matlab,caption={Matlab code to solve rep-20},label=code:rep-20%
 ]{../exercise-3/team02_rep20.m}
@@ -702,6 +706,7 @@ destinations. Somehow one IP destination is more interesting than the others.
     language=Matlab,caption={Matlab code to solve rep-21},label=code:rep-21%
 ]{../exercise-3/team02_rep21.m}
 
+\newpage
 \lstinputlisting[%
     language=Matlab,caption={Matlab code to solve rep-22 and rep-23},label=code:rep-22%
 ]{../exercise-3/team02_rep22.m}
